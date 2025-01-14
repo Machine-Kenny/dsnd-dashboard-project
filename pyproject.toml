@@ -1,0 +1,22 @@
+[project]
+name = "dsnd-dashboard-project"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "employee-events",
+    "ipykernel>=6.29.5",
+    "matplotlib==3.9.2",
+    "numpy==2.1.2",
+    "pandas==2.2.3",
+    "pytest>=8.3.4",
+    "python-fasthtml==0.8.0",
+    "scikit-learn==1.5.2",
+    "scipy==1.14.1",
+    "setuptools>=59.0.0",
+    "sqlite-minutils>=4.0.3",
+]
+
+[tool.uv.sources]
+employee-events = { path = "python-package", editable = true }
