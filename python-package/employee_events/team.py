@@ -1,8 +1,5 @@
 from employee_events.query_base import QueryBase
 
-import pandas as pd
-from sqlite3 import connect
-
 class Team(QueryBase):
     name = "team"
 
