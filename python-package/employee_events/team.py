@@ -1,5 +1,6 @@
 from employee_events.query_base import QueryBase
 
+
 class Team(QueryBase):
     name = "team"
 
@@ -8,7 +9,7 @@ class Team(QueryBase):
             SELECT team_name, team_id
             FROM {self.name};
         """
-        
+
         return self.query(sql_query)
 
     def username(self, id):
@@ -17,7 +18,7 @@ class Team(QueryBase):
             FROM {self.name}
             WHERE team_id = {id};
         """
-        
+
         return self.query(sql_query)
 
     def model_data(self, id):

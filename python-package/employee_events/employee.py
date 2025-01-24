@@ -9,7 +9,7 @@ class Employee(QueryBase):
         SELECT first_name || ' ' || last_name AS full_name, employee_id
                 FROM {self.name}
                 """
-        
+
         return self.query(sql_query)
 
     def username(self, id):

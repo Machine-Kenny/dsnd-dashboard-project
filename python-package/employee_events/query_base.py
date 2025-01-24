@@ -1,6 +1,5 @@
-import pandas as pd
-from sqlite3 import connect
 from employee_events.sql_execution import QueryMixin
+
 
 class QueryBase(QueryMixin):
     name = ""
@@ -32,4 +31,3 @@ class QueryBase(QueryMixin):
             ORDER BY note_date;
         """
         return self.pandas_query(query)
-

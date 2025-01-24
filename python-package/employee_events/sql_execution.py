@@ -1,9 +1,12 @@
-from sqlite3 import connect
-from pathlib import Path
 from functools import wraps
+from pathlib import Path
+from sqlite3 import connect
+
 import pandas as pd
 
 db_path = Path(__file__).parent / "employee_events.db"
+
+
 class QueryMixin:
     def pandas_query(self, sql_query):
         with connect(db_path) as connection:
@@ -14,8 +17,8 @@ class QueryMixin:
             cursor = connection.cursor()
             result = cursor.execute(sql_query).fetchall()
         return result
-    
- 
+
+
 def query(func):
     """
     Decorator that runs a standard sql execution
@@ -30,5 +33,5 @@ def query(func):
         result = cursor.execute(query_string).fetchall()
         connection.close()
         return result
-    
+
     return run_query
