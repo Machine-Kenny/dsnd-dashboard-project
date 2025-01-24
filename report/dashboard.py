@@ -1,4 +1,4 @@
-from fasthtml.common import *
+from fasthtml.common import H1, Div, FastHTML, serve
 import matplotlib.pyplot as plt
 
 from employee_events import Employee, Team
@@ -113,27 +113,62 @@ report = Report()
 
 @app.get('/')
 def home(r):
-    return report("1", Employee())
+    return report("3", Employee())
 
 
-@app.get('/employee/{id:str}')
-def employee(r, id):
+# @app.get('/employee/{id:int}')
+# def employee(r, id):
+#     return report(id, Employee())
+
+@app.get('/employee/{id}')
+def employee(r, id:str):
     return report(id, Employee())
 
 
-@app.get('/team/{id:str}')
-def team(r, id):
+# @app.get('/team/{id:int}')
+# def team(r, id):
+#     return report(id, Team())
+
+@app.get('/team/{id}')
+def team(r, id:str):
     return report(id, Team())
 
 
-@app.get('/update_dropdown{r}')
+# @app.get('/update_dropdown{r}')
+# def update_dropdown(r):
+#     dropdown = DashboardFilters.children[1]
+#     print('PARAM', r.query_params['profile_type'])
+#     if r.query_params['profile_type'] == 'Team':
+#         return dropdown(None, Team())
+#     elif r.query_params['profile_type'] == 'Employee':
+#         return dropdown(None, Employee())
+
+@app.get('/update_dropdown')
 def update_dropdown(r):
     dropdown = DashboardFilters.children[1]
-    print('PARAM', r.query_params['profile_type'])
-    if r.query_params['profile_type'] == 'Team':
+    profile_type = r.query_params.get('profile_type')
+    if not profile_type:
+        raise ValueError("Profile type is required.")
+    
+    print('PARAM', profile_type)  # Debugging
+
+    if profile_type == 'Team':
         return dropdown(None, Team())
-    elif r.query_params['profile_type'] == 'Employee':
+    elif profile_type == 'Employee':
         return dropdown(None, Employee())
+
+
+
+# @app.post('/update_data')
+# async def update_data(r):
+#     from fasthtml.common import RedirectResponse
+#     data = await r.form()
+#     profile_type = data._dict['profile_type']
+#     id = data._dict['user-selection']
+#     if profile_type == 'Employee':
+#         return RedirectResponse(f"/employee/{id}", status_code=303)
+#     elif profile_type == 'Team':
+#         return RedirectResponse(f"/team/{id}", status_code=303)
 
 
 @app.post('/update_data')
@@ -141,11 +176,15 @@ async def update_data(r):
     from fasthtml.common import RedirectResponse
     data = await r.form()
     profile_type = data._dict['profile_type']
-    id = data._dict['user-selection']
+    id = data._dict.get('user-selection')  # Use `get` to avoid KeyError if `user-selection` is missing
+    if not id:
+        raise ValueError("Invalid ID selected.")  # Validate ID early
+
     if profile_type == 'Employee':
         return RedirectResponse(f"/employee/{id}", status_code=303)
     elif profile_type == 'Team':
         return RedirectResponse(f"/team/{id}", status_code=303)
+
     
     
 serve()

@@ -6,7 +6,7 @@ project_root = Path(__file__).resolve().parent
 
 @pytest.fixture
 def db_path():
-    return project_root / "employee_events.db"
+    return project_root / "employeess_events.db"
 
 def test_db_exists(db_path):
     assert db_path.is_file(), "The SQLite database file does not exist."
