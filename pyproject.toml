@@ -20,3 +20,9 @@ dependencies = [
 
 [tool.uv.sources]
 employee-events = { path = "python-package", editable = true }
+
+[dependency-groups]
+dev = [
+    "flake8>=7.1.1",
+    "pre-commit>=4.1.0",
+]
