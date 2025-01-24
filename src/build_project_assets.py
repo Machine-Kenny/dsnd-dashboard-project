@@ -142,7 +142,6 @@ notes = pd.DataFrame(_, columns=["employee_id", "employee_name", "note"]).assign
     event_date=np.random.choice(df.event_date, size=len(_), replace=True)
 )
 
-
 df = df.merge(
     notes[["employee_id", "event_date", "note"]],
     on=["employee_id", "event_date"],
@@ -189,9 +188,11 @@ model = LogisticRegression(penalty=None)
 
 X = events.groupby("employee_id")[["positive_events", "negative_events"]].sum()
 
-y = X.join(
-    df.drop_duplicates("employee_id").set_index("employee_id")[["recruited"]]
-).recruited
+recruited_data = df.drop_duplicates("employee_id").set_index("employee_id")[
+    ["recruited"]
+]
+
+y = X.join(recruited_data).recruited
 
 model.fit(X, y)
 
