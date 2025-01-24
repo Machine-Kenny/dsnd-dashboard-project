@@ -35,7 +35,8 @@ def test_employee_table_exists(table_names):
 
 
 def test_team_table_exists(table_names):
-    assert "team" in table_names, "The 'team' table does not exist in the database."
+    error_message = "The 'team' table does not exist in the database."
+    assert "team" in table_names, error_message
 
 
 def test_employee_events_table_exists(table_names):

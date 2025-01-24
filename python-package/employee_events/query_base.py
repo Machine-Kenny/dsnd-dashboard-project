@@ -9,8 +9,8 @@ class QueryBase(QueryMixin):
 
     def event_counts(self, id):
         query = f"""
-            SELECT event_date, 
-                   SUM(positive_events) AS positive_events, 
+            SELECT event_date,
+                   SUM(positive_events) AS positive_events,
                    SUM(negative_events) AS negative_events
             FROM {self.name}
             JOIN employee_events USING({self.name}_id)

@@ -3,7 +3,11 @@ import matplotlib.pyplot as plt
 
 from employee_events import Employee, Team
 from utils import load_model
-from base_components import Dropdown, BaseComponent, Radio, MatplotlibViz, DataTable
+from base_components import BaseComponent
+from base_components import DataTable
+from base_components import Dropdown
+from base_components import MatplotlibViz
+from base_components import Radio
 from combined_components import FormGroup, CombinedComponent
 
 

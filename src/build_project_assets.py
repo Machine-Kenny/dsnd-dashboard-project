@@ -46,7 +46,8 @@ profiles = {
     "chaotic_good": {
         "positive": lambda: left_skew(-1000, 5).astype(int),
         "negative": lambda: np.random.choice(
-            [0, np.random.choice([50, 200])], p=[0.98, 0.02]
+            [0, np.random.choice([50, 200])],
+            p=[0.98, 0.02],
         ),
         "chance": 0.2,
     },
@@ -146,7 +147,11 @@ df = df.merge(
     notes[["employee_id", "event_date", "note"]],
     on=["employee_id", "event_date"],
     how="left",
-).merge(notes[["employee_id", "employee_name"]].drop_duplicates(), on=["employee_id"])
+).merge(
+    notes[["employee_id", "employee_name"]].drop_duplicates(),
+    on=["employee_id"],
+)
+
 
 df = df.assign(shift=df.team_id.apply(lambda x: shift[x - 1]))
 
@@ -164,7 +169,13 @@ employee = df.drop_duplicates("employee_id").assign(
 )[["employee_id", "first_name", "last_name", "team_id"]]
 
 events = df[
-    ["event_date", "employee_id", "team_id", "positive_events", "negative_events"]
+    [
+        "event_date",
+        "employee_id",
+        "team_id",
+        "positive_events",
+        "negative_events",
+    ]
 ]
 
 team = df.drop_duplicates("team_id")[["team_id", "team_name", "shift", "manager_name"]]
@@ -173,9 +184,11 @@ notes = df.dropna()[["employee_id", "team_id", "note", "event_date"]].rename(
     columns={"event_date": "note_date"}
 )
 
+
 model = LogisticRegression(penalty=None)
 
 X = events.groupby("employee_id")[["positive_events", "negative_events"]].sum()
+
 y = X.join(
     df.drop_duplicates("employee_id").set_index("employee_id")[["recruited"]]
 ).recruited
