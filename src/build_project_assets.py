@@ -25,26 +25,36 @@ def left_skew(a, loc, size=500):
 
 profiles = {
     "good": {
-        "positive": lambda: norm.rvs(loc=norm.rvs(4), scale=1).astype(int),
-        "negative": lambda: expon.rvs(loc=0, scale=np.random.choice([0.5, 1])).astype(
-            int
-        ),
+        "positive": lambda: norm.rvs(
+            loc=norm.rvs(4), scale=1
+        ).astype(int),
+        "negative": lambda: expon.rvs(
+            loc=0, scale=np.random.choice([0.5, 1])
+        ).astype(int),
         "chance": 0.5,
     },
     "normal": {
-        "positive": lambda: norm.rvs(loc=norm.rvs(3), scale=1).astype(int),
+        "positive": lambda: norm.rvs(
+            loc=norm.rvs(3), scale=1
+        ).astype(int),
         "negative": lambda: norm.rvs(
             loc=2, scale=np.random.choice([0.5, 1, 2, 3])
         ).astype(int),
         "chance": 0.15,
     },
     "poor": {
-        "positive": lambda: expon.rvs(loc=0, scale=0.5).astype(int),
-        "negative": lambda: norm.rvs(loc=0.5).astype(int),
+        "positive": lambda: expon.rvs(
+            loc=0, scale=0.5
+        ).astype(int),
+        "negative": lambda: norm.rvs(
+            loc=0.5
+        ).astype(int),
         "chance": 0.1,
     },
     "chaotic_good": {
-        "positive": lambda: left_skew(-1000, 5).astype(int),
+        "positive": lambda: left_skew(
+            -1000, 5
+        ).astype(int),
         "negative": lambda: np.random.choice(
             [0, np.random.choice([50, 200])],
             p=[0.98, 0.02],
@@ -52,8 +62,12 @@ profiles = {
         "chance": 0.2,
     },
     "chotic_bad": {
-        "positive": lambda: expon.rvs(loc=0, scale=5).astype(int),
-        "negative": lambda: left_skew(-1000, 10).astype(int),
+        "positive": lambda: expon.rvs(
+            loc=0, scale=5
+        ).astype(int),
+        "negative": lambda: left_skew(
+            -1000, 10
+        ).astype(int),
         "chance": 0.2,
     },
 }
@@ -138,8 +152,18 @@ for idx, e in enumerate(employee, start=1):
     for note in e["notes"]:
         _.append([idx, e["name"], note])
 
-notes = pd.DataFrame(_, columns=["employee_id", "employee_name", "note"]).assign(
-    event_date=np.random.choice(df.event_date, size=len(_), replace=True)
+notes = (
+    pd.DataFrame(
+        _,
+        columns=["employee_id", "employee_name", "note"]
+    )
+    .assign(
+        event_date=np.random.choice(
+            df.event_date,
+            size=len(_),
+            replace=True
+        )
+    )
 )
 
 df = df.merge(
@@ -177,20 +201,34 @@ events = df[
     ]
 ]
 
-team = df.drop_duplicates("team_id")[["team_id", "team_name", "shift", "manager_name"]]
+team = (
+    df.drop_duplicates("team_id")[
+        ["team_id", "team_name", "shift", "manager_name"]
+    ]
+)
 
-notes = df.dropna()[["employee_id", "team_id", "note", "event_date"]].rename(
-    columns={"event_date": "note_date"}
+notes = (
+    df.dropna()[
+        ["employee_id", "team_id", "note", "event_date"]
+    ]
+    .rename(columns={"event_date": "note_date"})
 )
 
 
 model = LogisticRegression(penalty=None)
 
-X = events.groupby("employee_id")[["positive_events", "negative_events"]].sum()
+X = (
+    events.groupby("employee_id")[
+        ["positive_events", "negative_events"]
+    ].sum()
+)
 
-recruited_data = df.drop_duplicates("employee_id").set_index("employee_id")[
-    ["recruited"]
-]
+recruited_data = (
+    df.drop_duplicates("employee_id")
+    .set_index("employee_id")[
+        ["recruited"]
+    ]
+)
 
 y = X.join(recruited_data).recruited
 
@@ -205,7 +243,12 @@ with model_path.open("wb") as file:
     pickle.dump(model, file)
 
 
-db_path = cwd.parent / "python-package" / "employee_events" / "employee_events.db"
+db_path = (
+    cwd.parent /
+    "python-package" /
+    "employee_events" /
+    "employee_events.db"
+)
 
 connection = connect(db_path)
 
