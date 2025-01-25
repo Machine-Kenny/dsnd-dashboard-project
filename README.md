@@ -1,5 +1,5 @@
 
-# Software Engineering for Data Scientists 
+# Software Engineering for Data Scientists
 
 This repository contains starter code for the **Software Engineering for Data Scientists** final project. Please reference your course materials for documentation on this repository's structure and important files. Happy coding!
 
@@ -50,7 +50,7 @@ erDiagram
     TEXT first_name
     TEXT last_name
     INTEGER team_id
-    
+
   }
 
   employee_events {
