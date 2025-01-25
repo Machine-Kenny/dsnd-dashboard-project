@@ -3,7 +3,7 @@ repos:
     # uv version.
     rev: 0.5.17
     hooks:
-      # - id: uv-lock
+      - id: uv-lock
       - id: uv-export
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.1.8
@@ -15,8 +15,9 @@ repos:
     rev: 23.12.0
     hooks:
       - id: black
-
-  -   repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v5.0.0  # Use the ref you want to point at
-      hooks:
-        - id: trailing-whitespace
+  
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        args: ["--max-line-length=120"]
